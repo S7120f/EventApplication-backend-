@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: eventapp-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: eventdb
+      MYSQL_USER: eventuser
+      MYSQL_PASSWORD: eventpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - eventapp-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: eventapp-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: eventuser
+      PMA_PASSWORD: eventpass
+    ports:
+      - "8081:80"
+    networks:
+      - eventapp-network
+
+  backend:
+    build: .                              # bygger  Spring Boot-app från Dockerfile
+    container_name: eventapp-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    env_file:
+      - .env                              #  här laddas.env automatiskt
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/eventdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: eventuser
+      SPRING_DATASOURCE_PASSWORD: eventpass
+    networks:
+      - eventapp-network
+
+networks:
+  eventapp-network:
+    driver: bridge

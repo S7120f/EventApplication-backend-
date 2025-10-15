@@ -18,6 +18,13 @@ target/
 *.iws
 *.iml
 *.ipr
+*.env
+
+# Ignore database data
+mysql-data/
+
+# Ignore build outputs
+/target
 
 ### NetBeans ###
 /nbproject/private/
