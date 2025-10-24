@@ -1,6 +1,7 @@
 package com.EventApplication.EventApplication.service;
 
 import com.EventApplication.EventApplication.model.Event;
+import com.EventApplication.EventApplication.model.ReservationStatus;
 import com.EventApplication.EventApplication.model.TicketReservation;
 import com.EventApplication.EventApplication.repositry.EventRepository;
 import com.EventApplication.EventApplication.repositry.ReservationRepository;
