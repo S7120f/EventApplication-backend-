@@ -1,7 +1,6 @@
 package com.EventApplication.EventApplication.repositry;
 
 import com.EventApplication.EventApplication.model.ReservationStatus;
-import com.EventApplication.EventApplication.model.Ticket;
 import com.EventApplication.EventApplication.model.TicketReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 

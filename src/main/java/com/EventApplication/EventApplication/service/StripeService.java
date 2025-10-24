@@ -1,11 +1,9 @@
 package com.EventApplication.EventApplication.service;
 
 import com.EventApplication.EventApplication.model.Event;
-import com.EventApplication.EventApplication.model.ReservationStatus;
 import com.EventApplication.EventApplication.model.TicketReservation;
 import com.EventApplication.EventApplication.repositry.EventRepository;
 import com.EventApplication.EventApplication.repositry.ReservationRepository;
-import com.EventApplication.EventApplication.repositry.TicketRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
