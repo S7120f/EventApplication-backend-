@@ -49,6 +49,17 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
+    public TicketReservation markReservationCompleted(Long reservationId){
+
+        TicketReservation ticketReservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new RuntimeException("reservation with id " + reservationId + " was not found"));
+
+        ticketReservation.setStatus(ReservationStatus.COMPLETED);
+        reservationRepository.save(ticketReservation);
+
+        return ticketReservation;
+    }
+
     @Transactional
     public void expiredOldReservation() {
         List<TicketReservation> expired = reservationRepository
