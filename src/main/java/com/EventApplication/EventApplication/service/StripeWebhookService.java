@@ -1,8 +1,5 @@
 package com.EventApplication.EventApplication.service;
 
-import com.EventApplication.EventApplication.model.ReservationStatus;
-import com.EventApplication.EventApplication.model.TicketReservation;
-import com.EventApplication.EventApplication.repositry.ReservationRepository;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.model.Event;
 import com.stripe.model.EventDataObjectDeserializer;
@@ -19,10 +16,8 @@ public class StripeWebhookService {
     @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
-    private final ReservationRepository reservationRepository;
 
-    public StripeWebhookService(ReservationRepository reservationRepository, ReservationService reservationService) {
-        this.reservationRepository = reservationRepository;
+    public StripeWebhookService(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
 
@@ -30,16 +25,15 @@ public class StripeWebhookService {
     public void handleWebhookEvent(String payload, String sigHeader) throws SignatureVerificationException {  // (payload) = JSON-data (payment information), (sigHeader) = verifies that Stripe sent the event
         Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
 
-        if ("checkout.session.completed".equals(event.getType())) {  // filter our events, we just searching for checkout.session.completed
+        if ("checkout.session.completed".equals(event.getType())) {  // filter our events, searching for checkout.session.completed
             EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
 
             if (dataObjectDeserializer.getObject().isPresent()) {
                 Session session = (Session) dataObjectDeserializer.getObject().get();
-
                 Long reservationId = Long.valueOf(session.getMetadata().get("reservationId"));
-                reservationService.markReservationCompleted(reservationId);
 
-                System.out.println("✅ Payment completed for reservation " + reservationId);
+                reservationService.markReservationCompleted(reservationId);
+                System.out.println("Payment completed for reservation " + reservationId);
 
             }
         }
