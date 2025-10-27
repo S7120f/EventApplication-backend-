@@ -1,6 +1,7 @@
 package com.EventApplication.EventApplication.service;
 
 import com.EventApplication.EventApplication.model.Event;
+import com.EventApplication.EventApplication.model.ReservationStatus;
 import com.EventApplication.EventApplication.model.TicketReservation;
 import com.EventApplication.EventApplication.repositry.EventRepository;
 import com.EventApplication.EventApplication.repositry.ReservationRepository;
@@ -10,6 +11,8 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class StripeService {
@@ -28,9 +31,18 @@ public class StripeService {
     public String createCheckoutSession(Long reservationId) throws StripeException {
         Stripe.apiKey = stripeApiKey;
 
+
+
         TicketReservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new RuntimeException("Reservation not found"));
         Event evet = reservation.getEvent();
+
+        // check expired reservation
+        if (reservation.getReservedUntil().isBefore(LocalDateTime.now())) {
+            reservation.setStatus(ReservationStatus.EXPIRED);
+            reservationRepository.save(reservation);
+            throw new RuntimeException("Reservation expired, cannot proceed to payment");
+        }
 
         //Create a payment session
         SessionCreateParams params = SessionCreateParams.builder() // using builder to build up complex object

@@ -30,9 +30,12 @@ public class ReservationService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event with id " + "not found"));
 
+
+        //Control for available ticket
         if (event.getTicketAvailable() < quantity) {
             throw new RuntimeException("Not enough tickets available");
         }
+
 
         // decrease available tickets
         event.setTicketAvailable(event.getTicketAvailable() - quantity);
@@ -42,15 +45,14 @@ public class ReservationService {
         TicketReservation reservation = new TicketReservation();
         reservation.setEvent(event);
         reservation.setQuantity(quantity);
-        reservation.setReservedUntil(LocalDateTime.now().plusMinutes(15));
+        reservation.setReservedUntil(LocalDateTime.now().plusMinutes(1));
         reservation.setStatus(ReservationStatus.ACTIVE);
-        System.out.println("detta är min komando1!!!!!" + LocalDateTime.now().plusMinutes(15));
+        System.out.println("detta är min komando1!!!!!" + LocalDateTime.now().plusMinutes(1));
 
         return reservationRepository.save(reservation);
     }
 
     public TicketReservation markReservationCompleted(Long reservationId){
-
         TicketReservation ticketReservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new RuntimeException("reservation with id " + reservationId + " was not found"));
 
@@ -59,6 +61,8 @@ public class ReservationService {
 
         return ticketReservation;
     }
+
+
 
     @Transactional
     public void expiredOldReservation() {
