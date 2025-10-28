@@ -80,9 +80,13 @@ public class ReservationService {
     }
 
 
+    public void cancelReservation(TicketReservation reservation) {
+        Event event = reservation.getEvent();
 
+        event.setTicketAvailable(event.getTicketAvailable() + reservation.getQuantity());
+        eventRepository.save(event);
 
-
-
-
+        reservation.setStatus(ReservationStatus.CANCELLED);
+        reservationRepository.save(reservation);
+    }
 }

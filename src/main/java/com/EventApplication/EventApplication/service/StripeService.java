@@ -46,7 +46,7 @@ public class StripeService {
 
         //Create a payment session
         SessionCreateParams params = SessionCreateParams.builder() // using builder to build up complex object
-                .setMode(SessionCreateParams.Mode.PAYMENT)// PAYMENY = one-time payment
+                .setMode(SessionCreateParams.Mode.PAYMENT)// PAYMENT = one-time payment
                 .setSuccessUrl("http://localhost:4200/success?session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl("http://localhost:4200/cancel")
                 .addLineItem(
