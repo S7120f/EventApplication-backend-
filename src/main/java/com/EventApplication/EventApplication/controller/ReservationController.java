@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +35,7 @@ public class ReservationController {
         TicketReservation reservation = reservationService.createReservation(request.getEventId(), request.getQuantity());
 
         // Skicka realtidsuppdatering till alla klienter som lyssnar på eventet
-        messagingTemplate.convertAndSend("/topic/events" + request.getEventId(), reservation.getQuantity());
+        messagingTemplate.convertAndSend("/topic/events", reservation.getEvent());
 
         return ResponseEntity.ok(reservation);
     }
@@ -60,10 +61,10 @@ public class ReservationController {
         // om inte redan expired/cancelled
         if (reservation.getStatus() == ReservationStatus.ACTIVE) {
             reservationService.cancelReservation(reservation);
-            messagingTemplate.convertAndSend("/topic/events" + reservation.getEvent().getId(), reservation.getEvent());
+            messagingTemplate.convertAndSend("/topic/events", reservation.getEvent());
         }
-
         return ResponseEntity.ok().build();
     }
+
 
 }
