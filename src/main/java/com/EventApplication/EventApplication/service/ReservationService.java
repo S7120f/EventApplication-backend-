@@ -63,23 +63,6 @@ public class ReservationService {
     }
 
 
-
-    @Transactional
-    public void expiredOldReservation() {
-        List<TicketReservation> expired = reservationRepository
-                .findByReservedUntilBeforeAndStatus(LocalDateTime.now(), ReservationStatus.ACTIVE );
-
-        for (TicketReservation r : expired) {
-            Event e = eventRepository.findById(r.getId()).orElseThrow();
-            e.setTicketAvailable(e.getTicketAvailable() + r.getQuantity());
-            eventRepository.save(e);
-
-            r.setStatus(ReservationStatus.EXPIRED);
-            reservationRepository.save(r);
-        }
-    }
-
-
     public void cancelReservation(TicketReservation reservation) {
         Event event = reservation.getEvent();
 
