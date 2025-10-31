@@ -31,7 +31,7 @@ services:
       - eventapp-network
 
   backend:
-    build: .                              # bygger  Spring Boot-app från Dockerfile
+    build: .                              # bygger Spring Boot-app från Dockerfile
     container_name: eventapp-backend
     ports:
       - "8080:8080"
