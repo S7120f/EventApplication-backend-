@@ -16,6 +16,12 @@ services:
       - ./mysql-data:/var/lib/mysql
     networks:
       - eventapp-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
@@ -31,20 +37,23 @@ services:
       - eventapp-network
 
   backend:
-    build: .                              # bygger Spring Boot-app från Dockerfile
+    build: .
     container_name: eventapp-backend
+    restart: always
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     env_file:
-      - .env                              #  här laddas.env automatiskt
+      - .env
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/eventdb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: eventuser
       SPRING_DATASOURCE_PASSWORD: eventpass
     networks:
       - eventapp-network
+
 
 networks:
   eventapp-network:
