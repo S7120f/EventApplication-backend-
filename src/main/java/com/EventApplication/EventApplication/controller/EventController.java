@@ -8,7 +8,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {
+        "http://localhost:4200", //  lokala Angular
+        "https://seashell-app-tacu5.ondigitalocean.app" //  deployade Angular-app
+})
 public class EventController {
 
     private final EventRepository eventRepository;

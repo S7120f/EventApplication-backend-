@@ -14,7 +14,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reservations")
-@CrossOrigin("*")
+@CrossOrigin(origins = {
+        "http://localhost:4200", //  lokala Angular
+        "https://seashell-app-tacu5.ondigitalocean.app" //  deployade Angular-app
+})
 public class ReservationController {
 
     private final ReservationService reservationService;

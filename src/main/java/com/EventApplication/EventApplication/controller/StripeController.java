@@ -17,7 +17,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/stripe")
-@CrossOrigin("*")
+@CrossOrigin(origins = {
+        "http://localhost:4200", //  lokala Angular
+        "https://seashell-app-tacu5.ondigitalocean.app" //  deployade Angular-app
+})
 public class StripeController {
 
 
