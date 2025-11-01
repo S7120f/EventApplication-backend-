@@ -17,7 +17,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")
                 .setAllowedOriginPatterns(
                         "http://localhost:4200",
-                        "https://starfish-app-u9wvs.ondigitalocean.app" //
+                        "https://seashell-app-tacu5.ondigitalocean.app",
+                        "https://starfish-app-u9wvs.ondigitalocean.app"
                 )
                 .withSockJS();
     }
