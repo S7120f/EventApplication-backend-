@@ -43,6 +43,7 @@ public class ReservationController {
         return ResponseEntity.ok(reservation);
     }
 
+    // endpoint för hämta status
     @GetMapping("/{id}/status")
     public ResponseEntity<String> getReservationStatus(@PathVariable Long id) {
         return reservationRepository.findById(id)

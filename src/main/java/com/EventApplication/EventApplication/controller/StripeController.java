@@ -35,6 +35,8 @@ public class StripeController {
     @Value("${stripe.api.key}")
     private String stripeApiKey;
 
+
+    // Endpoint för att vår stipe checkout
     @PostMapping("/checkout-session")
     public ResponseEntity<Map<String, String>> createCheckout(@RequestBody CheckoutRequest request) {
         ReservationStatus reservationStatus = ReservationStatus.COMPLETED;
@@ -50,14 +52,16 @@ public class StripeController {
         }
     }
 
+
+    // Stripe endpoint för att verifiera betalning
     @GetMapping("/verify")
     public ResponseEntity<?> verifyPayment(@RequestParam("session_id") String sessionId) throws StripeException {
         Stripe.apiKey = stripeApiKey;
         Session session = Session.retrieve(sessionId);
 
-        System.out.println("🔍 Stripe session ID: " + sessionId);
-        System.out.println("🔍 Payment status: " + session.getPaymentStatus());
-        System.out.println("🔍 Session JSON: " + session.toJson());
+        System.out.println(" Stripe session ID: " + sessionId);
+        System.out.println(" Payment status: " + session.getPaymentStatus());
+        System.out.println(" Session JSON: " + session.toJson());
 
         if ("paid".equals(session.getPaymentStatus())) {
             Long reservationId = Long.valueOf(session.getMetadata().get("reservationId"));

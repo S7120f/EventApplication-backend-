@@ -20,11 +20,13 @@ public class EventController {
         this.eventRepository = eventRepository;
     }
 
+    // hämta alla events
     @GetMapping
     public List<Event> getAllEvent() {
         return eventRepository.findAll();
     }
 
+    // Hämta event via id
     @GetMapping("/{id}")
     public Event getEventById(@PathVariable Long id){
 
