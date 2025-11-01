@@ -15,10 +15,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         //Registrerar en WebSocket-endpoints som klienter (t.ex. Angular, React) kan ansluta till.
         // "/ws" blit URL:en där anslutningen sker, ex: ws://localhost:8080/ws
         registry.addEndpoint("/ws")
-                //Tillåter all klienter från andra domäner (CORS) får genom att använda "*"
-                .setAllowedOriginPatterns("*")
-                // Aktiverar SockJS-stöd - en fallback lösning om WebSocket inte stöds i klienten
-                .withSockJS();
+                .setAllowedOriginPatterns(
+                        "http://localhost:4200",
+                        "https://starfish-app-u9vws.ondigitalocean.app"
+                );
     }
 
     @Override
