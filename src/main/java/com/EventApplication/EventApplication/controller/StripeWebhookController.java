@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/stripe")
+@RequestMapping("/api")
 @CrossOrigin(origins = {
         "http://localhost:4200", //  lokala Angular
         "https://stingray-app-fe45r.ondigitalocean.app" //  deployade Angular-app
@@ -20,7 +20,7 @@ public class StripeWebhookController {
         this.stripeWebhookService = stripeWebhookService;
     }
 
-    @PostMapping("/webhook")
+    @PostMapping("/stripe/webhook")
     public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
 
         try {
