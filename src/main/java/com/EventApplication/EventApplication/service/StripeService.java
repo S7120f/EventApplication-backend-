@@ -47,8 +47,8 @@ public class StripeService {
         //Create a payment session
         SessionCreateParams params = SessionCreateParams.builder() // using builder to build up complex object
                 .setMode(SessionCreateParams.Mode.PAYMENT)// PAYMENT = one-time payment
-                .setSuccessUrl("http://localhost:4200/success?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl("http://localhost:4200/cancel")
+                .setSuccessUrl("https://stingray-app-fe45r.ondigitalocean.app/success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl("https://stingray-app-fe45r.ondigitalocean.app/cancel")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder() // adds a product or service to the payment
                                 .setQuantity((long) reservation.getQuantity())
