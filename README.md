@@ -31,14 +31,14 @@ Projektet är byggt i **Spring Boot**, använder **MySQL** som databas och har s
 
 ## Installation och körning
 
-### 1️Klona projektet
+### 1️. Klona projektet
 
 ```bash
 git clone https://github.com/S7120f/EventApplication.git
 cd EventApplication
 
 ```
-2️ Konfigurera miljövariabler
+### 2. Konfigurera miljövariabler
 Skapa en fil med namnet .env (eller sätt miljövariabler i din IDE / server).
 STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxx
 STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxx
@@ -73,6 +73,7 @@ Om du vill för-populera databasen med exempeldata för lokal utveckling, kör f
 
 INSERT INTO event (title, description, price, ticket_available)
 VALUES
+
 ('Summer Festival', 'A huge outdoor music event with DJs and live bands', 499, 345),
 ('Tech Expo 2025', 'Experience the latest innovations in AI and robotics', 199, 201),
 ('Art & Wine Evening', 'An exclusive night of art exhibits and wine tasting', 349, 106),
@@ -80,3 +81,5 @@ VALUES
 ('Winter Wonderland', 'Family-friendly holiday market with food and activities', 249, 308);
 
 Du kan köra detta i MySQL Workbench, phpMyAdmin, eller med mysql CLI.
+
+-> Frontend - https://github.com/S7120f/EventApplication-frontend.git
