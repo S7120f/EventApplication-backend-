@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping("/api/events")
 @CrossOrigin(origins = {
         "http://localhost:4200", //  lokala Angular
-        "https://stingray-app-fe45r.ondigitalocean.app/" //  deployade Angular-app
+        "https://stingray-app-fe45r.ondigitalocean.app" //  deployade Angular-app
 })
 public class EventController {
 
