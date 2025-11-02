@@ -23,9 +23,17 @@ public class ReservationCleanupService {
     }
 
     // Kör varje 1 minut
-    @Scheduled(fixedRate = 6000)
+    @Scheduled(fixedRate = 60000) // körs varje minut
     public void expiredOldReservations() {
+
         reservationRepository.findAll().forEach(reservation -> {
+            // Hoppa över completed/cancelled
+            if (reservation.getStatus() == ReservationStatus.COMPLETED || reservation.getStatus() == ReservationStatus.CANCELLED) {
+                System.out.println(" Skipping reservation " + reservation.getId() + " (status: " + reservation.getStatus() + ")");
+                return;
+            }
+
+            // kolla om tiden har gått ut
             if (reservation.getStatus() == ReservationStatus.ACTIVE && reservation.getReservedUntil().isBefore(LocalDateTime.now())) {
 
                 //Lägg tillbaka biljetter till eventet
