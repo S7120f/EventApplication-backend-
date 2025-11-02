@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/chat")
 @CrossOrigin(origins = {
         "http://localhost:4200", //  lokala Angular
-        "https://seashell-app-tacu5.ondigitalocean.app" //
+        "https://stingray-app-fe45r.ondigitalocean.app/" //
 })
 public class AiController {
 
