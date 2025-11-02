@@ -6,40 +6,41 @@ Projektet är byggt i **Spring Boot**, använder **MySQL** som databas och har s
 
 ---
 
-## Funktionalitet
+##  Funktionalitet
 
-- Skapa, hämta och hantera event
-- Reservera biljetter temporärt (1 minut)
-- Automatisk rensning av utgångna reservationer
-- Stripe Checkout-integration
-- Hantering av betalningsbekräftelser via Webhook
-- Realtidsuppdatering till frontend via WebSocket
+- Skapa, hämta och hantera event  
+- Reservera biljetter temporärt (1 minut)  
+- Automatisk rensning av utgångna reservationer  
+- Stripe Checkout-integration  
+- Hantering av betalningsbekräftelser via Webhook  
+- Realtidsuppdatering till frontend via **WebSocket**
 
 ---
 
-## Teknologier
+##  Teknologier
 
-- **Java 21**
-- **Spring Boot 3**
-- **Spring Data JPA (Hibernate)**
-- **MySQL**
-- **Stripe API**
-- **WebSocket (SimpMessagingTemplate)**
+- **Java 21**  
+- **Spring Boot 3**  
+- **Spring Data JPA (Hibernate)**  
+- **MySQL**  
+- **Stripe API**  
+- **WebSocket (SimpMessagingTemplate)**  
 - **Maven**
 
 ---
 
-## Installation och körning
+##  Installation & körning
 
-### 1️. Klona projektet
+### 1️ Klona projektet
 
 ```bash
 git clone https://github.com/S7120f/EventApplication.git
 cd EventApplication
+2️. Konfigurera miljövariabler
+Skapa en fil med namnet .env (eller sätt miljövariabler direkt i din IDE eller server).
 
-```
-### 2. Konfigurera miljövariabler
-Skapa en fil med namnet .env (eller sätt miljövariabler i din IDE / server).
+bash
+Kopiera kod
 STRIPE_SECRET_KEY=sk_test_xxxxxxxxxxxxxxxxxxxxxxx
 STRIPE_WEBHOOK_SECRET=whsec_xxxxxxxxxxxxxxxxxxxxxxx
 
@@ -49,37 +50,63 @@ SPRING_DATASOURCE_PASSWORD=yourpassword
 
 SPRING_JPA_HIBERNATE_DDL_AUTO=update
 SPRING_JPA_SHOW_SQL=true
+ OBS! Om du kör i DigitalOcean, sätt dessa värden under
+App Settings → Environment Variables.
 
-Om du kör i DigitalOcean, sätt dessa i "Environment Variables" i din appinställning.
-
+3️. Starta applikationen
+bash
+Kopiera kod
 mvn spring-boot:run
+Applikationen körs sedan på:
+ http://localhost:8080
 
-http://localhost:8080
-
-
+ API Endpoints
 Endpoint	Method	Beskrivning
 /api/events	GET	Hämtar alla event
 /api/events/{id}	GET	Hämtar specifikt event
 /api/reservations	POST	Skapar en biljettreservation
-/api/stripe/create-checkout-session	POST	Skapar en Stripe checkout session
+/api/stripe/create-checkout-session	POST	Skapar en Stripe checkout-session
 /api/stripe/webhook	POST	Stripe webhook endpoint
 
+ Databas (MySQL) Setup
+När applikationen startas första gången skapas tabellerna automatiskt av Spring Boot JPA
+(tack vare spring.jpa.hibernate.ddl-auto=update).
 
-Databas (MySQL) Setup 
-
-När applikationen startas första gången kommer tabellerna att skapas automatiskt av Spring Boot JPA (tack vare spring.jpa.hibernate.ddl-auto=update).
 Om du vill för-populera databasen med exempeldata för lokal utveckling, kör följande SQL:
 
-
+sql
+Kopiera kod
 INSERT INTO event (title, description, price, ticket_available)
 VALUES
-
 ('Summer Festival', 'A huge outdoor music event with DJs and live bands', 499, 345),
 ('Tech Expo 2025', 'Experience the latest innovations in AI and robotics', 199, 201),
 ('Art & Wine Evening', 'An exclusive night of art exhibits and wine tasting', 349, 106),
 ('Comedy Night', 'Stand-up performances by Sweden’s top comedians', 299, 129),
 ('Winter Wonderland', 'Family-friendly holiday market with food and activities', 249, 308);
+ Kör detta i MySQL Workbench, phpMyAdmin, eller med mysql CLI.
 
-Du kan köra detta i MySQL Workbench, phpMyAdmin, eller med mysql CLI.
+ Tester
+Projektet innehåller enhetstester för:
 
--> Frontend - https://github.com/S7120f/EventApplication-frontend.git
+ReservationService
+
+ReservationCleanupService
+
+StripeWebhookService
+
+Kör testerna med:
+
+bash
+Kopiera kod
+mvn test
+ Deployment
+Vid deployment (t.ex. på DigitalOcean App Platform):
+
+Sätt miljövariablerna i appinställningarna
+
+Koppla databasen till samma miljö
+
+Se till att Stripe webhook URL pekar på din publika adress:
+https://<din-app>.ondigitalocean.app/api/stripe/webhook
+
+-> frontend - https://github.com/S7120f/EventApplication-frontend.git
