@@ -25,6 +25,9 @@ public class StripeWebhookService {
     public void handleWebhookEvent(String payload, String sigHeader) throws SignatureVerificationException {  // (payload) = JSON-data (payment information), (sigHeader) = verifies that Stripe sent the event
         Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
 
+        System.out.println("🔔 Received Stripe event: " + event.getType());
+
+
         if ("checkout.session.completed".equals(event.getType())) {  // filter our events, searching for checkout.session.completed
             EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
 
@@ -32,9 +35,24 @@ public class StripeWebhookService {
                 Session session = (Session) dataObjectDeserializer.getObject().get();
                 Long reservationId = Long.valueOf(session.getMetadata().get("reservationId"));
 
-                reservationService.markReservationCompleted(reservationId);
-                System.out.println("Payment completed for reservation " + reservationId);
+                System.out.println("🎯 Webhook triggered for reservationId=" + reservationId);
 
+                try {
+                    // ✅ Lägg till skydd här
+                    boolean alreadyCompleted = reservationService.isReservationCompleted(reservationId);
+
+                    if (alreadyCompleted) {
+                        System.out.println("⚠️ Reservation " + reservationId + " already marked as COMPLETED. Skipping update.");
+                        return;
+                    }
+
+
+                    reservationService.markReservationCompleted(reservationId);
+                    System.out.println("Payment completed for reservation " + reservationId);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

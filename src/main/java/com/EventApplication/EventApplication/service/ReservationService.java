@@ -62,6 +62,11 @@ public class ReservationService {
         return ticketReservation;
     }
 
+    public boolean isReservationCompleted(Long reservationId) {
+        return reservationRepository.findById(reservationId)
+                .map(res -> res.getStatus() == ReservationStatus.COMPLETED)
+                .orElse(false);
+    }
 
     public void cancelReservation(TicketReservation reservation) {
         Event event = reservation.getEvent();
